@@ -1,0 +1,37 @@
+
+<html>
+  <head>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.20/angular-ui-router.js"></script>
+  
+
+    <style>.active { color: red; font-weight: bold; }</style>
+  </head>
+
+  <body ng-app="myapp" >
+        <input type="text" ng-model="inputValue" name= "inputValue" custom-validation>
+  </body>
+
+<script>
+var app = angular.module('myapp', []);
+app.directive('customValidation', function(){
+   return {
+     require: 'ngModel',
+     link: function(scope, element, attrs, modelCtrl) {
+
+       modelCtrl.$parsers.push(function (inputValue) {
+
+         var transformedInput = inputValue.toLowerCase().replace(/ /g, ''); 
+
+         if (transformedInput!=inputValue) {
+           modelCtrl.$setViewValue(transformedInput);
+           modelCtrl.$render();
+         }         
+
+         return transformedInput;         
+       });
+     }
+   };
+});
+</script>
+</html>
